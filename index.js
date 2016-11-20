@@ -1,19 +1,15 @@
 var through2 = require('through2');
-var lazypipe = require('lazypipe');
-var read = require('gulp-read');
-var assign = require('lodash.assign');
 var path = require('path');
 
 function relativePath(vinylFile) {
   return path.relative(vinylFile.base, vinylFile.path);
 }
 
-function collectFiles(gulp, glob, options) {
+function collectFiles(stream) {
   var collectedFiles = {};
   var ended = false;
 
-  var srcOptions = assign({}, options, {read:false});
-  gulp().src(glob, srcOptions)
+  stream
     .on('data', function(file) {
        collectedFiles[relativePath(file)] = file;
     })
@@ -47,8 +43,8 @@ function emitRemainingFiles(whenFilesCollected) {
   }
 }
 
-function overlayWith(gulp, glob, options) {
-  var whenFilesCollected = collectFiles(gulp, glob, options);
+function overlayWith(stream) {
+  var whenFilesCollected = collectFiles(stream);
 
   function emitOverlayedFiles(baseFile, enc, cb) {
     whenFilesCollected(function(overlayFiles) {
@@ -67,33 +63,6 @@ function overlayWith(gulp, glob, options) {
     emitRemainingFiles(whenFilesCollected));
 }
 
-function requireGulp() {
-  try {
-    return require('gulp');
-  } catch (e) {
-    return null;
-  }
-}
-
-function initOverlayPipe(gulp, overlayFn) {
-  return function(globs, options) {
-    var options = options || {};
-    var overlayPipe = lazypipe().pipe(overlayFn, gulp, globs, options);
-    if (options.read !== false) {
-      overlayPipe = overlayPipe.pipe(read);
-    }
-    return overlayPipe(); 
-  };
-}
-
-function create(gulp) {
-  gulp = (gulp) ? function() { return gulp } : requireGulp; 
-
-  return {
-    with: initOverlayPipe(gulp, overlayWith),
-    //onto: initOverlayPipe(gulp, overlayOnto),
-    use: create
-  }
-}
-
-module.exports = create();
+module.exports = {
+  with: overlayWith
+};

@@ -25,7 +25,7 @@ describe('overlay.with', function() {
      'with files in overlayFolder', function(done) {
 
     gulp.src('test/baseFolder/**/*.txt')
-      .pipe(overlay.with('test/overlayFolder1/**/*.txt'))
+      .pipe(overlay.with(gulp.src('test/overlayFolder1/**/*.txt')))
       .pipe(gutil.buffer(function(err, files) { 
         expect(extractResults(files)).to.eql({
           'file1.txt': 'baseFolder/file1.txt',
