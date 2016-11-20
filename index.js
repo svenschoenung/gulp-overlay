@@ -1,7 +1,8 @@
 var through2 = require('through2');
 var path = require('path');
 
-function relativePath(vinylFile) { return path.relative(vinylFile.base, vinylFile.path);
+function relativePath(vinylFile) {
+  return path.relative(vinylFile.base, vinylFile.path);
 }
 
 function collectFiles(stream) {
