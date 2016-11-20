@@ -8,21 +8,92 @@
 
 # gulp-overlay
 
-overlay.with('');
-
-```
-gulp.src('src/base/**')
-  .pipe(overlayWith(gulp.src('src/project1/**', )))
-
-gulp.src('src/project1/**')
-  .pipe(overlay(gulp.src('src/base/**'));
-```
-
-gulp.src
+Merge two gulp streams by overlaying one onto the other.
 
 ## Installation
 
+    npm install --save-dev gulp-overlay
+
 ## Usage
+
+Assume the following folder structure:
+
+    src/
+      common/
+        menu.html
+        main.html
+        footer.html
+        pages/
+          about.html
+      project1/
+        menu.html
+        main.html
+        pages/
+          about.html
+          tos.html
+      project2/
+        main.html
+        footer.html
+        pages/
+          legal.html
+
+You can use `overlay.with()` to overlay `project1/` on top of `common/`. Files in `project1/` will overwrite the corresponding files in `common/`.
+
+```javascript
+var overlay = require('gulp-overlay');
+
+gulp.task('build-project1', function() {
+  return gulp.src('src/common/**/*.html')
+    .pipe(overlay.with(gulp.src('src/project1/**/*.html')))
+    .pipe(gulp.dest('dist/project1'));
+});
+
+gulp.task('build-project2', function() {
+  return gulp.src('src/common/**/*.html')
+    .pipe(overlay.with(gulp.src('src/project2/**/*.html')))
+    .pipe(gulp.dest('dist/project2'));
+});
+```
+
+Alternatively you can use `overlay.onto()` to do the same thing:
+
+```javascript
+var overlay = require('gulp-overlay');
+
+gulp.task('build-project1', function() {
+  return gulp.src('src/project1/**/*.html')
+    .pipe(overlay.onto(gulp.src('src/common/**/*.html')))
+    .pipe(gulp.dest('dist/project1'));
+});
+
+gulp.task('build-project2', function() {
+  return gulp.src('src/project2/**/*.html')
+    .pipe(overlay.onto(gulp.src('src/common/**/*.html')))
+    .pipe(gulp.dest('dist/project2'));
+});
+```
+The result in both cases is the following:
+
+    dist/
+      project1/
+        menu.html     1
+        main.html     1
+        footer.html   *
+        pages/
+          about.html  1
+          tos.html    1
+      project2/
+        menu.html     *
+        main.html     2
+        footer.html   2
+        pages/
+          about.html  *
+          legal.html  2
+          
+          
+`*`: files from the `src/common/` directory  
+`1`: files from the `src/project1/` directory  
+`2`: files from the `src/project2/` directory
 
 ## License
 
