@@ -1,8 +1,7 @@
 var through2 = require('through2');
 var path = require('path');
 
-function relativePath(vinylFile) {
-  return path.relative(vinylFile.base, vinylFile.path);
+function relativePath(vinylFile) { return path.relative(vinylFile.base, vinylFile.path);
 }
 
 function collectFiles(stream) {
@@ -63,6 +62,27 @@ function overlayWith(stream) {
     emitRemainingFiles(whenFilesCollected));
 }
 
+function overlayOnto(stream) {
+  var whenFilesCollected = collectFiles(stream);
+
+  function emitOverlayedFiles(overlayFile, enc, cb) {
+    whenFilesCollected(function(baseFiles) {
+      var overlayFilePath = relativePath(overlayFile);
+      var baseFile = baseFiles[overlayFilePath];
+      if (baseFile) {
+        delete baseFiles[overlayFilePath];
+      }
+      cb(null, overlayFile);
+    });
+  }
+
+  return through2.obj(emitOverlayedFiles,
+    emitRemainingFiles(whenFilesCollected));
+}
+
+
+
 module.exports = {
-  with: overlayWith
+  with: overlayWith,
+  onto: overlayOnto
 };
