@@ -40,7 +40,7 @@ function emitRemainingFiles(whenFilesCollected) {
       });
       cb();
     });
-  }
+  };
 }
 
 function overlayWith(stream) {
@@ -52,9 +52,9 @@ function overlayWith(stream) {
       var overlayFile = overlayFiles[baseFilePath];
       if (overlayFile) {
         delete overlayFiles[baseFilePath];
-        cb(null, overlayFile);
+        return cb(null, overlayFile);
       } else {
-        cb(null, baseFile);
+        return cb(null, baseFile);
       }
     });
   }

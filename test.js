@@ -7,7 +7,7 @@ var expect = chai.expect;
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var overlay = require('./index.js')
+var overlay = require('./index.js');
 var path = require('path');
 
 function extractResults(files) {
@@ -27,6 +27,9 @@ describe('overlay.with', function() {
       .pipe(overlay.with(gulp.src('test/overlayFolder1/**/*.txt')))
       .pipe(overlay.with(gulp.src('test/overlayFolder2/**/*.txt')))
       .pipe(gutil.buffer(function(err, files) { 
+	if (err) {
+	  return done(err);
+	}
         expect(extractResults(files)).to.eql({
           'file1.txt': 'baseFolder/file1.txt',
           'file2.txt': 'overlayFolder2/file2.txt',
@@ -36,7 +39,7 @@ describe('overlay.with', function() {
           'folder1/file3.txt': 'overlayFolder1/folder1/file3.txt',
           'folder2/file1.txt': 'overlayFolder1/folder2/file1.txt',
           'folder2/file2.txt': 'overlayFolder2/folder2/file2.txt'
-        })
+        });
         done();
       }));
   });
@@ -50,6 +53,9 @@ describe('overlay.onto', function() {
       .pipe(overlay.onto(gulp.src('test/overlayFolder1/**/*.txt')))
       .pipe(overlay.onto(gulp.src('test/baseFolder/**/*.txt')))
       .pipe(gutil.buffer(function(err, files) { 
+	if (err) {
+	  return done(err);
+	}
         expect(extractResults(files)).to.eql({
           'file1.txt': 'baseFolder/file1.txt',
           'file2.txt': 'overlayFolder2/file2.txt',
@@ -59,7 +65,7 @@ describe('overlay.onto', function() {
           'folder1/file3.txt': 'overlayFolder1/folder1/file3.txt',
           'folder2/file1.txt': 'overlayFolder1/folder2/file1.txt',
           'folder2/file2.txt': 'overlayFolder2/folder2/file2.txt'
-        })
+        });
         done();
       }));
   });
