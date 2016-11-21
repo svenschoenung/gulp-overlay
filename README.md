@@ -4,7 +4,7 @@
 [![Dependency Status](https://david-dm.org/svenschoenung/gulp-overlay.svg)](https://david-dm.org/svenschoenung/gulp-overlay)
 [![devDependency Status](https://david-dm.org/svenschoenung/gulp-overlay/dev-status.svg)](https://david-dm.org/svenschoenung/gulp-overlay#info=devDependencies)
 [![Code Climate](https://codeclimate.com/github/svenschoenung/gulp-overlay/badges/gpa.svg)](https://codeclimate.com/github/svenschoenung/gulp-overlay)
-[![Codacy Badge](https://api.codacy.com/project/badge/grade/)](https://www.codacy.com/app/svenschoenung/gulp-overlay)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/8e9503cff73646f3abe1b7d557d357e1)](https://www.codacy.com/app/svenschoenung/gulp-overlay)
 
 # gulp-overlay
 
