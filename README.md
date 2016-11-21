@@ -95,6 +95,20 @@ The result in both cases is the following:
 `1`: files from the `src/project1/` directory  
 `2`: files from the `src/project2/` directory
 
+### Minimizing memory utilization
+
+`gulp-overlay` doesn't need file contents to do its job. That means you can defer reading them by providing the `read:false` option to `gulp.src()`. After `gulp-overlay` is finished you can read the file contents using [`gulp-read`](http://github.com/svenschoenung/gulp-read):
+
+    var overlay = require('gulp-overlay');
+    var read = require('gulp-read');
+  
+    gulp.task('build-project1', function() {
+      return gulp.src('src/project1/**/*.html', {read:false})
+        .pipe(overlay.onto(gulp.src('src/common/**/*.html', {read:false})))
+        .pipe(read())
+        .pipe(gulp.dest('dist/project1'));
+    });
+
 ## License
 
 [MIT](LICENSE)
