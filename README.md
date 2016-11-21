@@ -10,7 +10,7 @@
 
 Merge two gulp streams by overlaying one onto the other.
 
-![](overlay.png)
+<img src="overlay.png" width="600" />
 
 ## Installation
 
