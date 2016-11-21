@@ -10,6 +10,22 @@
 
 Merge two gulp streams by overlaying one onto the other.
 
+                         stream1    stream2
+    stream1  stream2        +          +
+                         stream2    stream1
+
+       |        |           |          |
+       |        |         file5*       |
+       |        |         file3*     file1
+       |      file5*        |        file5*
+     file4    file4*      file4*     file4
+       |      file3*        |        file3*
+     file2    file2*      file2*     file2
+     file1      |         file1        |
+       |        |           |          |
+       |        |           |          |
+       V        V           V          V
+
 ## Installation
 
     npm install --save-dev gulp-overlay
