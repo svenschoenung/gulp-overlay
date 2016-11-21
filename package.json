@@ -1,7 +1,7 @@
 {
   "name": "gulp-overlay",
-  "description": "",
-  "version": "0.0.0",
+  "description": "Merge two gulp streams by overlaying one onto the other",
+  "version": "0.0.1",
   "author": {
     "name": "Sven Schönung <sven.schoenung@gmail.com> (http://sven.schoenung.org/)"
   },
