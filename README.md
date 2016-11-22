@@ -123,6 +123,23 @@ Since all files of the second stream have to be stored in memory for `gulp-overl
 
 This also has the added benefit that not all the file contents have to be read, since some files will be replaced by others anyway. 
 
+### Enforcing file order
+
+`gulp-overlay` can only keep the ordering of the first stream. Any remaining files from the second stream will be emitted afterwards and in no particular order. 
+If the order of files is important in your stream, you should place [`gulp-order`](https://npmjs.com/package/gulp-order) or [`gulp-sort`](https://npmjs.com/package/gulp-sort) somewhere after `gulp-overlay`:
+
+```javascript
+var overlay = require('gulp-overlay');
+var order = require('gulp-order');
+
+gulp.task('build-project1', function() {
+  return gulp.src('src/project1/**/*.js')
+    .pipe(overlay.onto(gulp.src('src/common/**/*.js')))
+    .pipe(order(['vendor/**/*.js', 'app/**/*.js']))
+    .pipe(gulp.dest('dist/project1'));
+});
+```
+
 ## License
 
 [MIT](LICENSE)
