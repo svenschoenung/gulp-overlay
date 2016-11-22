@@ -105,7 +105,7 @@ dist/
 
 ### Minimizing memory utilization
 
-`gulp-overlay` doesn't need file contents to do its job. That means you can defer reading them by providing the `read:false` option to `gulp.src()`. After `gulp-overlay` is finished you can read the file contents using [`gulp-read`](http://github.com/svenschoenung/gulp-read):
+`gulp-overlay` doesn't need file contents to do its job. It is therefore recommended that you defer reading file contents by providing the `read:false` option to `gulp.src()`. You can read the file contents later by placing [`gulp-read`](http://github.com/svenschoenung/gulp-read) somewhere after `gulp-overlay` in your stream:
 
 ```javascript
 var overlay = require('gulp-overlay');
@@ -118,6 +118,10 @@ gulp.task('build-project1', function() {
     .pipe(gulp.dest('dist/project1'));
 });
 ```
+
+Since all files of the second stream have to be stored in memory for `gulp-overlay` to work, this potentially saves a lot of memory when dealing with a large number of files.
+
+This also has the added benefit that not all the file contents have to be read, since some files will be replaced by others anyway. 
 
 ## License
 
