@@ -6,7 +6,7 @@ var chai = require('chai');
 var expect = chai.expect;
 
 var gulp = require('gulp');
-var gutil = require('gulp-util');
+var listStream = require('list-stream').obj;
 var overlay = require('./index.js');
 var path = require('path');
 
@@ -26,7 +26,7 @@ describe('overlay.with', function() {
     gulp.src('test/baseFolder/**/*.txt')
       .pipe(overlay.with(gulp.src('test/overlayFolder1/**/*.txt')))
       .pipe(overlay.with(gulp.src('test/overlayFolder2/**/*.txt')))
-      .pipe(gutil.buffer(function(err, files) { 
+      .pipe(listStream(function(err, files) { 
 	if (err) {
 	  return done(err);
 	}
@@ -52,7 +52,7 @@ describe('overlay.onto', function() {
     gulp.src('test/overlayFolder2/**/*.txt')
       .pipe(overlay.onto(gulp.src('test/overlayFolder1/**/*.txt')))
       .pipe(overlay.onto(gulp.src('test/baseFolder/**/*.txt')))
-      .pipe(gutil.buffer(function(err, files) { 
+      .pipe(listStream(function(err, files) { 
 	if (err) {
 	  return done(err);
 	}
